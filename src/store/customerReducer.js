@@ -1,17 +1,37 @@
 const defaultSctate = {
-    customers : [] ,
+  customers: [],
+};
+
+export const ADD_CUSTOMER = 'ADD_CUSTOMER';
+export const REMOVE_CUSTOMERS = 'REMOVE_CUSTOMERS';
+export const ADD_MANY_CUSTOMERS = 'ADD_MANY_CUSTOMERS'
+
+export const ASYNC_ADD_CUSTOMER = 'ASYNC_ADD_CUSTOMER';
+
+export const customerReducer = (state = defaultSctate, action) => {
+  switch (action.type) {
+    case ADD_MANY_CUSTOMERS:
+      return{
+        ...state, 
+        customers: [...state.customers, ...action.payload] 
+      }
+    case ADD_CUSTOMER:
+      return { 
+        ...state, 
+        customers: [...action.payload] };
+    case REMOVE_CUSTOMERS:
+      return {
+        ...state,
+        customers: state.customers.filter((customer) => customer.id !== action.payload),
+      };
+    default:
+      return state;
   }
+};
+
+export const addCustomerAction = (payload) => ({ type: ADD_CUSTOMER, payload });
+export const AsyncaddCustomerAction = () => ({ type: ASYNC_ADD_CUSTOMER, });
 
 
-export const customerReducer = (state = defaultSctate,action)=>{
-    switch(action.type){
-      case "ADD_CUSTOMER":
-       return {...state,
-                customers:[...state.customers, action.payload]}
-      case "REMOVE_CUSTOMERS":
-        return {...state,
-                customers:state.cash - action.payload}
-      default:
-        return state
-    }
-  }
+export const removeCustomerAction = (payload) => ({ type: REMOVE_CUSTOMERS, payload });
+export const addManyCustomerAction = (payload) => ({ type: ADD_MANY_CUSTOMERS, payload });
